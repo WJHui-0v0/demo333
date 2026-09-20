@@ -262,8 +262,7 @@ class Trainer:
         sample_limit = max(0, int(getattr(self.config, "train_eval_batches", 2)))
         sample_batches = []
         if sample_limit:
-            # Use left-padded eval batches for decoder-only generation. This
-            # avoids right-padding warnings during the periodic sample eval.
+
             sample_iterator = iter(dev_loader)
             for _ in range(sample_limit):
                 try:
@@ -487,9 +486,6 @@ if __name__ == "__main__":
         train_loader, dev_loader, test_loader, model, optimizer
     )
 
-    # Accelerator keeps prepared models in internal lists. Free those
-    # references before loading the best adapter, otherwise LoRA evaluation
-    # can briefly hold two complete bf16 base models.
     trainer.model, trainer.optimizer, trainer.scheduler = (
         trainer.accelerator.free_memory(
             trainer.model, trainer.optimizer, trainer.scheduler

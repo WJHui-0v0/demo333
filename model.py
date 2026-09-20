@@ -104,8 +104,6 @@ class Qwen4NER(nn.Module):
         self.model.config.use_cache = False
         self.model.config.pretraining_tp = 1
 
-        # PEFT freezes the base model, but make the invariant explicit so a
-        # future adapter/config change cannot silently create full-model grads.
         for name, param in self.model.named_parameters():
             if "lora_" not in name:
                 param.requires_grad = False

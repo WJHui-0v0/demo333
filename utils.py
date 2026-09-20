@@ -122,7 +122,7 @@ class Metrics:
                 if not name or not typ or typ not in self.entity_types:
                     continue
                 pred_set.add((self._normalize(str(name)), typ))
-            # 逐样本求交集，再跨样本累加（避免跨样本污染）
+
             types = (set(self.entity_types)
                      | {t for _, t in true_set} | {t for _, t in pred_set})
             for typ in types:
